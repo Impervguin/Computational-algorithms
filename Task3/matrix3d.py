@@ -2,6 +2,8 @@ import plotly.graph_objects as go
 import plotly.express as px
 import tio
 
+EPS = 0.01
+
 class Matrix3d:
     def __init__(self, fname) -> None:
         self.x = []
@@ -71,6 +73,21 @@ class Matrix3d:
         t = list(zip(self.y, range(len(self.y))))
         return tio.get_nearest_in_mat(t, n, y)
 
+    def axiseq(self, __value: object) -> bool:
+        if len(self.x) != len(__value.x):
+            return False
+        if len(self.y) != len(__value.y):
+            return False
+        
+        for i in range(len(self.x)):
+            if abs(self.x[i] - __value.x[i]) > EPS:
+                return False
+        
+        for i in range(len(self.y)):
+            if abs(self.y[i] - __value.y[i]) > EPS:
+                return False
+        
+        return True
 
 
 

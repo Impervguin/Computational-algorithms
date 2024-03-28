@@ -28,9 +28,16 @@ class Matrix4d:
 
             s = f.readline().strip()
             n += 1
-        
+        if not self.checkAxis():
+            raise ValueError("Different xy axis in z-slices")
         self.sortZ()
-    
+
+    def checkAxis(self):
+        for i in range(len(self.f) - 1):
+            if not self.f[i].axiseq(self.f[i - 1]):
+                return False
+        return True
+
     def sortZ(self):
         self.z, self.f = zip(*sorted(zip(self.z, self.f), key=lambda t: t[0]))
 
@@ -44,6 +51,18 @@ class Matrix4d:
         if len(self.z) <= zindex:
             raise ValueError(f"Z-slice index out of range: {zindex}")
         return self.f[zindex]
+
+    def getXmax(self):
+        return self.f[0].x[-1]
+
+    def getXmin(self):
+        return self.f[0].x[0]
+
+    def getYmax(self):
+        return self.f[0].y[-1]
+
+    def getYmin(self):
+        return self.f[0].y[0]
         
         
 if __name__ == "__main__":
