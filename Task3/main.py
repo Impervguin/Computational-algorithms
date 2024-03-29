@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 import newton
 import spline
 import tio
+import custom
 
 NEWTONNX = 3
 NEWTONNY = 3
@@ -24,15 +25,17 @@ yarr = [Ymin + dy * i for i in range(steps + 1)]
 
 newtonfarr = [[newton.newton4d(matrix4d, NEWTONNX, NEWTONNY, NEWTONNZ, x, y, Z) for y in yarr] for x in xarr]
 splinefarr = [[spline.apprspline4d(matrix4d, x, y, Z) for y in yarr] for x in xarr]
-
+customarr = [[custom.customInterpolation4d(matrix4d, NEWTONNX, NEWTONNY, NEWTONNZ, x, y, Z, "spline", "newton", "newton") for y in yarr] for x in xarr]
 zs, zindexes = zip(*matrix4d.getNearestZIndex(Z, 2))
 close1, close2 = matrix4d.f[zindexes[0]], matrix4d.f[zindexes[1]]
+
 
 traces = [
     go.Surface(x=close1.x, y=close1.y, z=close1.z, name=f"Table Z={zs[0]}"),
     go.Surface(x=close2.x, y=close2.y, z=close2.z, name=f"Table Z={zs[1]}"),
-    go.Surface(x=xarr, y=yarr, z=newtonfarr, name=f"Newton for Z={Z}", colorscale="Blues"),
-    go.Surface(x=xarr, y=yarr, z=splinefarr, name=f"Spline for Z={Z}", colorscale="Viridis"),
+    # go.Surface(x=xarr, y=yarr, z=newtonfarr, name=f"Newton for Z={Z}", colorscale="Blues"),
+    # go.Surface(x=xarr, y=yarr, z=splinefarr, name=f"Spline for Z={Z}", colorscale="Viridis"),
+    go.Surface(x=xarr, y=yarr, z=splinefarr, name=f"Custom for Z={Z}")
 ]
 
 fig = go.Figure(data=traces)

@@ -24,12 +24,6 @@ def newton(mat, n, x):
         res += x_mult * diff_table[i][0]
     return res
 
-def newtonSecondDeriativeThird(mat, x):
-    new_mat = tio.get_nearest_in_mat(mat, 4, x)
-    diff_table = newton_divided_difference(new_mat)
-    return 2 * diff_table[2][0] + diff_table[3][0] * (6 * x - 2 * (new_mat[0][0] + new_mat[1][0] + new_mat[2][0]))
-
-
 def newton3d(mat: m3.Matrix3d, nx, ny, x, y):
     # neary = [i[0] for i in tio.get_nearest_in_mat(mat.getZYfromX(0), ny + 1, y)]
     neary = mat.getNearestYIndex(y, ny + 1)
