@@ -63,6 +63,28 @@ class Matrix4d:
 
     def getYmin(self):
         return self.f[0].y[0]
+
+    def generateMatrix(self, xs, xe, xsteps, ys, ye, ysteps, zs, ze, zsteps, func):
+        x = [(xe - xs) / xsteps * i + xs for i in range(xsteps + 1)]
+        y = [(ye - ys) / ysteps * i + ys for i in range(ysteps + 1)]
+        z = [(ze - zs) / zsteps * i + zs for i in range(zsteps + 1)]
+        for zv in z:
+            m = m3.Matrix3d(None)
+            m.x = x
+            m.y = y
+            m.z = [[0] * len(x) for _ in range(len(y))]
+            for i in range(len(x)):
+                for j in range(len(y)):
+                    
+                    # if abs(x[i] + y[j]) < 10e-8:
+                    #     f = 1e8
+                    # else:
+                    #     f = func(x[i], y[j], zv)
+                    f = func(x[i], y[j], zv)
+                    m.z[j][i] = f
+            self.f.append(m)
+        self.z = z
+
         
         
 if __name__ == "__main__":

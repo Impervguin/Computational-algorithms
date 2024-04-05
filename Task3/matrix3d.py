@@ -47,12 +47,13 @@ class Matrix3d:
         self.sortY()
     
     def sortX(self):
+        self.transposeZ()
         self.x, self.z = zip(*sorted(zip(self.x, self.z), key=lambda t: t[0]))
+        self.transposeZ()
 
     def sortY(self):
-        self.transposeZ()
         self.y, self.z = zip(*sorted(zip(self.y, self.z), key=lambda t: t[0]))
-        self.transposeZ()
+        
     
     def transposeZ(self):
         tz = [[0] * len(self.x) for _ in range(len(self.y))]
