@@ -81,19 +81,44 @@ def yScalarMult(x, y, f):
 # В результате выдает функцию вида: y(x) = a0 * funcs[0](x) + a1 * funcs[1](x) + ... a(n-1) * funcs[n-1](x),
 # то есть функция просчитывает коэффициенты в разложении функции на funcs по заданной таблице
 # По сути необязательно для ОДУ функция, можно подать любую таблицу и функции разбиения
-def GetApproximateODE(x, y, n, funcs):
-    if (len(x) != len(y)):
-        raise ValueError("x and y must have the same length")
-    if (len(funcs) != n):
-        raise ValueError("Number of functions must equal n")
-    # print(funcs[0])
-    aCoeffs = [[ScalarMult(x, funcs[i], funcs[j]) for j in range(n)]for i in range(n)]
-    yCoeffs = [yScalarMult(x, y, funcs[i]) for i in range(n)]
+# def GetApproximateODE(x, y, n, funcs):
+    # if (len(x) != len(y)):
+    #     raise ValueError("x and y must have the same length")
+    # if (len(funcs) != n):
+    #     raise ValueError("Number of functions must equal n")
+#     # print(funcs[0])
+#     aCoeffs = [[ScalarMult(x, funcs[i], funcs[j]) for j in range(n)]for i in range(n)]
+#     yCoeffs = [yScalarMult(x, y, funcs[i]) for i in range(n)]
 
-    poliCoeffs = Gauss(aCoeffs, yCoeffs)
+#     poliCoeffs = Gauss(aCoeffs, yCoeffs)
 
+#     def func(xp):
+#         return sum([poliCoeffs[i] * funcs[i](xp) for i in range(n)])
+#     return func
+
+
+
+# funcs - функции в апроксимации
+# n - Степень разложения
+# coeffFuncs - Функции в дифуре при коэффициентах C1, C2, C3, при этом coeffFuncs[0] - Свободный член
+def GetApproximateODE(x, n, funcs, coeffFuncs):
+    if (len(funcs) != n + 1 or len(coeffFuncs) != n + 1):
+        raise ValueError("Number of functions must equal n + 1")
+    
+    f0 = coeffFuncs[0]
+    cCoeffs = [[sum([f1(xp) * f2(xp)  for xp in x]) for f2 in coeffFuncs[1:]] for f1 in coeffFuncs[1:] ]
+    fCoeffs = [-sum([f0(xp) * f(xp) for xp in x])  for f in coeffFuncs[1:]]
+
+    poliCoeffs = Gauss(cCoeffs, fCoeffs)
+    
     def func(xp):
-        return sum([poliCoeffs[i] * funcs[i](xp) for i in range(n)])
-    return func
+        return funcs[0](xp) + sum([poliCoeffs[i] * funcs[i + 1](xp) for i in range(n)])
+
+    return func, poliCoeffs
 
 
+    
+
+
+
+    
