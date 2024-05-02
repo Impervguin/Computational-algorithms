@@ -35,6 +35,8 @@ class Spline:
             dy1 = self.mat[i - 1][1] - self.mat[i - 2][1]
 
             tetaarr[i] = teta(dy, dy1, h_i, h_i1, tetaarr[i - 1], ksiarr[i - 1])
+        print(ksiarr)
+        print(tetaarr)
         c[-1] = tetaarr[-1] + (end / 2) * ksiarr[-1]
 
         for i in range(len(self.mat) - 2, 0, -1):

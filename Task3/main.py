@@ -44,7 +44,6 @@ STEPZ = 30
 
 
 matrix4d.generateMatrix(STARTX, STOPX, STEPX, STARTY, STOPY, STEPY, STARTZ, STOPZ, STEPZ, f)
-print(m4)
 X = -0.152
 Y = 1.141
 Z = 1.43

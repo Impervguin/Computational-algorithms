@@ -75,11 +75,6 @@ class Matrix4d:
             m.z = [[0] * len(x) for _ in range(len(y))]
             for i in range(len(x)):
                 for j in range(len(y)):
-                    
-                    # if abs(x[i] + y[j]) < 10e-8:
-                    #     f = 1e8
-                    # else:
-                    #     f = func(x[i], y[j], zv)
                     f = func(x[i], y[j], zv)
                     m.z[j][i] = f
             self.f.append(m)
