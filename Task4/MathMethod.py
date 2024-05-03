@@ -66,7 +66,7 @@ def LeastSquare2D(x, y, z, p, n):
                 res += a[ind] * xp ** i * yp ** j
                 ind += 1
         return res
-    return func
+    return func, a
 
 def ScalarMult(x, f1, f2):
     return sum([f1(xn) * f2(xn) for xn in x])
