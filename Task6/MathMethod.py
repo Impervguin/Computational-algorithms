@@ -29,14 +29,32 @@ def SympsonIntegral(x : list, f):
 
     return sum([symfunc(x[i], x[i + 1])  for i in range(len(x) - 1)])
 
+# def LegendrePolynom(n : int, x : float):
+#     if n < 0:
+#         raise ValueError("n must be >= 0")
+#     if n == 0:
+#         return 1
+#     if n == 1:
+#         return x
+#     return ((2 * n - 1) * x * LegendrePolynom(n - 1, x) - (n - 1) * LegendrePolynom(n - 2, x)) / n
+
+PascalTriangleMat = [[1]]
+
+def CalculatePascalTriangle(n: int):
+    for i in range(len(PascalTriangleMat), n + 1):
+        row = [1]
+        for k in range(len(PascalTriangleMat[i - 1]) - 1):
+            row.append(PascalTriangleMat[i - 1][k] + PascalTriangleMat[i - 1][k + 1])
+        row.append(1)
+        PascalTriangleMat.append(row)
+
+def PascalTriangle(n : int, k : int):
+    CalculatePascalTriangle(n)
+    return PascalTriangleMat[n][k]
+
+
 def LegendrePolynom(n : int, x : float):
-    if n < 0:
-        raise ValueError("n must be >= 0")
-    if n == 0:
-        return 1
-    if n == 1:
-        return x
-    return ((2 * n - 1) * x * LegendrePolynom(n - 1, x) - (n - 1) * LegendrePolynom(n - 2, x)) / n
+    return 1 / 2**n * sum([(-1)**i * PascalTriangle(n, i) * PascalTriangle(2 * n - 2 * i, n) * x ** (n - 2 * i)   for i in range(n // 2 + 1)])
 
 def LegendrePolynomDiff(n : int, x : float):
     return n / (1 - x ** 2) * (LegendrePolynom(n - 1, x) - x * LegendrePolynom(n, x))
@@ -122,3 +140,7 @@ def Spline2DFunc(x, y, z):
     # spf = SplineFunc(y, zx)
     # return spf(y0)
     return f
+
+# if __name__ == "__main__":
+#     print(LegendrePolynom(5, 0.2))
+#     print(LegendrePolynomA(5, 0.2))
